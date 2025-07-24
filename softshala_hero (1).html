@@ -1,0 +1,757 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Softshala Technologies - Digital Transformation Experts</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            overflow-x: hidden;
+            background: #0a0a0a;
+        }
+
+        .hero-section {
+            height: 100vh;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .carousel-container {
+            width: 100%;
+            height: 100%;
+            position: relative;
+        }
+
+        .carousel-slide {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 1s ease-in-out;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 1;
+        }
+
+        .carousel-slide.active {
+            opacity: 1;
+            visibility: visible;
+            z-index: 2;
+        }
+
+        /* Unified Background Pattern */
+        .slide-bg {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-size: cover;
+            background-position: center;
+        }
+
+        .slide-bg::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.4);
+            z-index: 1;
+        }
+
+        .slide-bg::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><defs><pattern id="grid" width="20" height="20" patternUnits="userSpaceOnUse"><path d="M 20 0 L 0 0 0 20" fill="none" stroke="rgba(255,255,255,0.05)" stroke-width="0.5"/></pattern></defs><rect width="100" height="100" fill="url(%23grid)"/></svg>');
+            z-index: 2;
+        }
+
+        /* Slide-specific backgrounds */
+        .slide-1 .slide-bg {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        }
+
+        .slide-2 .slide-bg {
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+        }
+
+        .slide-3 .slide-bg {
+            background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+        }
+
+        .slide-4 .slide-bg {
+            background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%);
+        }
+
+        .slide-content {
+            max-width: 1200px;
+            width: 100%;
+            padding: 0 2rem;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 4rem;
+            align-items: center;
+            z-index: 3;
+            position: relative;
+        }
+
+        .content-left {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            animation: slideInLeft 1s ease-out;
+        }
+
+        .content-right {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            animation: slideInRight 1s ease-out;
+        }
+
+        /* Brand Section */
+        .brand-header {
+            margin-bottom: 2rem;
+        }
+
+        .brand-logo {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: rgba(255, 255, 255, 0.9);
+            margin-bottom: 0.5rem;
+            letter-spacing: 0.5px;
+        }
+
+        .brand-tagline {
+            font-size: 0.9rem;
+            color: rgba(255, 255, 255, 0.7);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            font-weight: 500;
+        }
+
+        /* Service Badge */
+        .service-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            background: rgba(255, 255, 255, 0.15);
+            color: white;
+            padding: 0.8rem 1.5rem;
+            border-radius: 50px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            margin-bottom: 2rem;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .service-icon {
+            font-size: 1.2rem;
+        }
+
+        /* Main Content */
+        .slide-title {
+            font-size: 4rem;
+            font-weight: 800;
+            color: white;
+            line-height: 1.1;
+            margin-bottom: 1.5rem;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+        }
+
+        .slide-subtitle {
+            font-size: 1.3rem;
+            color: rgba(255, 255, 255, 0.9);
+            margin-bottom: 3rem;
+            line-height: 1.6;
+            font-weight: 400;
+        }
+
+        /* CTA Buttons Section */
+        .cta-section {
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+        }
+
+        .cta-buttons {
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            padding: 1.2rem 2.5rem;
+            border: none;
+            border-radius: 8px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            text-align: center;
+            min-width: 180px;
+            justify-content: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+            transition: left 0.5s ease;
+        }
+
+        .btn:hover::before {
+            left: 100%;
+        }
+
+        .btn-primary {
+            background: white;
+            color: #333;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
+            background: #f8f9fa;
+        }
+
+        .btn-secondary {
+            background: transparent;
+            color: white;
+            border: 2px solid rgba(255, 255, 255, 0.8);
+            backdrop-filter: blur(10px);
+        }
+
+        .btn-secondary:hover {
+            background: rgba(255, 255, 255, 0.1);
+            border-color: white;
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
+        }
+
+        .cta-description {
+            font-size: 0.9rem;
+            color: rgba(255, 255, 255, 0.7);
+            font-style: italic;
+        }
+
+        /* Visual Element */
+        .visual-container {
+            width: 450px;
+            height: 350px;
+            position: relative;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 20px;
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            padding: 2rem;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+        }
+
+        .visual-icon {
+            font-size: 4rem;
+            margin-bottom: 1.5rem;
+            opacity: 0.8;
+        }
+
+        .visual-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: white;
+            margin-bottom: 1rem;
+        }
+
+        .visual-features {
+            font-size: 1rem;
+            color: rgba(255, 255, 255, 0.8);
+            line-height: 1.5;
+        }
+
+        /* Navigation */
+        .carousel-indicators {
+            position: absolute;
+            bottom: 2rem;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: 1rem;
+            z-index: 10;
+        }
+
+        .indicator {
+            width: 14px;
+            height: 14px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.4);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: 2px solid transparent;
+        }
+
+        .indicator.active {
+            background: white;
+            transform: scale(1.2);
+            border-color: rgba(255, 255, 255, 0.5);
+        }
+
+        .carousel-nav {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            background: rgba(255, 255, 255, 0.15);
+            border: none;
+            color: white;
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            cursor: pointer;
+            font-size: 1.8rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(10px);
+            z-index: 10;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .carousel-nav:hover {
+            background: rgba(255, 255, 255, 0.25);
+            transform: translateY(-50%) scale(1.1);
+        }
+
+        .carousel-nav.prev {
+            left: 2rem;
+        }
+
+        .carousel-nav.next {
+            right: 2rem;
+        }
+
+        /* Animations */
+        @keyframes slideInLeft {
+            from {
+                opacity: 0;
+                transform: translateX(-50px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        @keyframes slideInRight {
+            from {
+                opacity: 0;
+                transform: translateX(50px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .slide-content {
+                grid-template-columns: 1fr;
+                gap: 2rem;
+                text-align: center;
+            }
+
+            .slide-title {
+                font-size: 2.5rem;
+            }
+
+            .visual-container {
+                width: 320px;
+                height: 250px;
+            }
+
+            .carousel-nav {
+                display: none;
+            }
+
+            .cta-buttons {
+                justify-content: center;
+            }
+
+            .btn {
+                min-width: 160px;
+                padding: 1rem 2rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .slide-title {
+                font-size: 2rem;
+            }
+
+            .slide-subtitle {
+                font-size: 1.1rem;
+            }
+
+            .visual-container {
+                width: 280px;
+                height: 200px;
+            }
+
+            .cta-buttons {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .btn {
+                width: 100%;
+                max-width: 280px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <section class="hero-section">
+        <div class="carousel-container">
+            
+            <!-- Slide 1: Salesforce Consulting -->
+            <div class="carousel-slide slide-1 active">
+                <div class="slide-bg"></div>
+                <div class="slide-content">
+                    <div class="content-left">
+                        <div class="brand-header">
+                            <div class="brand-logo">Softshala Technologies</div>
+                            <div class="brand-tagline">Digital Transformation Experts</div>
+                        </div>
+                        
+                        <div class="service-badge">
+                            <span class="service-icon">🏆</span>
+                            Salesforce Ridge Consulting Partner
+                        </div>
+                        
+                        <h1 class="slide-title">Customer-Centric Excellence</h1>
+                        <p class="slide-subtitle">Transform your customer relationships with our proven Salesforce expertise. We help businesses build stronger connections, streamline sales processes, and drive sustainable growth through strategic CRM implementation.</p>
+                        
+                        <div class="cta-section">
+                            <div class="cta-buttons">
+                                <a href="#salesforce-solutions" class="btn btn-primary">
+                                    <span>🚀</span> Explore Solutions
+                                </a>
+                                <a href="#case-studies" class="btn btn-secondary">
+                                    <span>📊</span> View Case Studies
+                                </a>
+                            </div>
+                            <p class="cta-description">Ready to transform your customer experience? Let's discuss your Salesforce journey.</p>
+                        </div>
+                    </div>
+                    <div class="content-right">
+                        <div class="visual-container">
+                            <div class="visual-icon">🎯</div>
+                            <div class="visual-title">Salesforce Mastery</div>
+                            <div class="visual-features">
+                                Sales Cloud • Service Cloud<br>
+                                Marketing Automation • Analytics<br>
+                                Custom Development • Integration
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Slide 2: ServiceNow Consulting -->
+            <div class="carousel-slide slide-2">
+                <div class="slide-bg"></div>
+                <div class="slide-content">
+                    <div class="content-left">
+                        <div class="brand-header">
+                            <div class="brand-logo">Softshala Technologies</div>
+                            <div class="brand-tagline">Digital Transformation Experts</div>
+                        </div>
+                        
+                        <div class="service-badge">
+                            <span class="service-icon">⚡</span>
+                            ServiceNow Implementation Partner
+                        </div>
+                        
+                        <h1 class="slide-title">Workflow Optimization</h1>
+                        <p class="slide-subtitle">Revolutionize your internal operations with ServiceNow's powerful platform. From IT service management to HR workflows, we create seamless digital experiences that boost productivity and employee satisfaction.</p>
+                        
+                        <div class="cta-section">
+                            <div class="cta-buttons">
+                                <a href="#servicenow-platform" class="btn btn-primary">
+                                    <span>🔧</span> Platform Demo
+                                </a>
+                                <a href="#workflow-assessment" class="btn btn-secondary">
+                                    <span>📋</span> Free Assessment
+                                </a>
+                            </div>
+                            <p class="cta-description">Streamline your operations with intelligent workflow automation solutions.</p>
+                        </div>
+                    </div>
+                    <div class="content-right">
+                        <div class="visual-container">
+                            <div class="visual-icon">🔄</div>
+                            <div class="visual-title">ServiceNow Excellence</div>
+                            <div class="visual-features">
+                                ITSM • HRSD • CMDB<br>
+                                Process Automation • Employee Portal<br>
+                                Incident Management • Analytics
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Slide 3: Salesforce Agentforce AI -->
+            <div class="carousel-slide slide-3">
+                <div class="slide-bg"></div>
+                <div class="slide-content">
+                    <div class="content-left">
+                        <div class="brand-header">
+                            <div class="brand-logo">Softshala Technologies</div>
+                            <div class="brand-tagline">Digital Transformation Experts</div>
+                        </div>
+                        
+                        <div class="service-badge">
+                            <span class="service-icon">🤖</span>
+                            Salesforce Agentforce Specialists
+                        </div>
+                        
+                        <h1 class="slide-title">AI-Powered Innovation</h1>
+                        <p class="slide-subtitle">Harness the revolutionary power of Salesforce Agentforce to automate customer interactions, generate intelligent insights, and accelerate your sales cycles with cutting-edge AI-driven automation and predictive analytics.</p>
+                        
+                        <div class="cta-section">
+                            <div class="cta-buttons">
+                                <a href="#agentforce-demo" class="btn btn-primary">
+                                    <span>🧠</span> AI Demo
+                                </a>
+                                <a href="#ai-consultation" class="btn btn-secondary">
+                                    <span>💡</span> AI Strategy Call
+                                </a>
+                            </div>
+                            <p class="cta-description">Discover how AI agents can transform your customer engagement and sales performance.</p>
+                        </div>
+                    </div>
+                    <div class="content-right">
+                        <div class="visual-container">
+                            <div class="visual-icon">🧠</div>
+                            <div class="visual-title">Agentforce AI</div>
+                            <div class="visual-features">
+                                Intelligent Automation • AI Agents<br>
+                                Predictive Analytics • Smart Workflows<br>
+                                Customer Intelligence • Sales AI
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Slide 4: ServiceNow Agentic AI -->
+            <div class="carousel-slide slide-4">
+                <div class="slide-bg"></div>
+                <div class="slide-content">
+                    <div class="content-left">
+                        <div class="brand-header">
+                            <div class="brand-logo">Softshala Technologies</div>
+                            <div class="brand-tagline">Digital Transformation Experts</div>
+                        </div>
+                        
+                        <div class="service-badge">
+                            <span class="service-icon">🌟</span>
+                            ServiceNow AI Innovation Partner
+                        </div>
+                        
+                        <h1 class="slide-title">Intelligent Operations</h1>
+                        <p class="slide-subtitle">Experience the future of IT operations with ServiceNow's Agentic AI. Create self-healing IT environments, implement predictive maintenance, and achieve intelligent incident resolution that learns and adapts to your organization's unique needs.</p>
+                        
+                        <div class="cta-section">
+                            <div class="cta-buttons">
+                                <a href="#ai-platform" class="btn btn-primary">
+                                    <span>🤖</span> AI Platform Tour
+                                </a>
+                                <a href="#ai-roadmap" class="btn btn-secondary">
+                                    <span>🗺️</span> AI Roadmap
+                                </a>
+                            </div>
+                            <p class="cta-description">Transform your IT operations with self-learning, predictive AI systems.</p>
+                        </div>
+                    </div>
+                    <div class="content-right">
+                        <div class="visual-container">
+                            <div class="visual-icon">🤖</div>
+                            <div class="visual-title">Agentic AI Platform</div>
+                            <div class="visual-features">
+                                Predictive IT • Self-Healing Systems<br>
+                                Intelligent Insights • Auto-Resolution<br>
+                                Machine Learning • Smart Operations
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Navigation Controls -->
+        <button class="carousel-nav prev" onclick="previousSlide()" aria-label="Previous slide">‹</button>
+        <button class="carousel-nav next" onclick="nextSlide()" aria-label="Next slide">›</button>
+
+        <!-- Slide Indicators -->
+        <div class="carousel-indicators">
+            <span class="indicator active" onclick="currentSlide(1)" aria-label="Go to slide 1"></span>
+            <span class="indicator" onclick="currentSlide(2)" aria-label="Go to slide 2"></span>
+            <span class="indicator" onclick="currentSlide(3)" aria-label="Go to slide 3"></span>
+            <span class="indicator" onclick="currentSlide(4)" aria-label="Go to slide 4"></span>
+        </div>
+    </section>
+
+    <script>
+        let currentSlideIndex = 0;
+        const slides = document.querySelectorAll('.carousel-slide');
+        const indicators = document.querySelectorAll('.indicator');
+        const totalSlides = slides.length;
+        let autoSlideInterval;
+
+        function showSlide(index) {
+            // Remove active class from all slides and indicators
+            slides.forEach((slide, i) => {
+                slide.classList.remove('active');
+                // Reset animations
+                const contentLeft = slide.querySelector('.content-left');
+                const contentRight = slide.querySelector('.content-right');
+                if (contentLeft && contentRight) {
+                    contentLeft.style.animation = 'none';
+                    contentRight.style.animation = 'none';
+                    contentLeft.offsetHeight; // Trigger reflow
+                    contentRight.offsetHeight; // Trigger reflow
+                }
+            });
+            
+            indicators.forEach(indicator => indicator.classList.remove('active'));
+
+            // Add active class to current slide and indicator
+            slides[index].classList.add('active');
+            indicators[index].classList.add('active');
+
+            // Restart animations for active slide
+            setTimeout(() => {
+                const activeSlide = slides[index];
+                const contentLeft = activeSlide.querySelector('.content-left');
+                const contentRight = activeSlide.querySelector('.content-right');
+                if (contentLeft && contentRight) {
+                    contentLeft.style.animation = 'slideInLeft 1s ease-out';
+                    contentRight.style.animation = 'slideInRight 1s ease-out';
+                }
+            }, 50);
+
+            currentSlideIndex = index;
+        }
+
+        function nextSlide() {
+            const next = (currentSlideIndex + 1) % totalSlides;
+            showSlide(next);
+        }
+
+        function previousSlide() {
+            const prev = (currentSlideIndex - 1 + totalSlides) % totalSlides;
+            showSlide(prev);
+        }
+
+        function currentSlide(index) {
+            pauseAutoSlide();
+            showSlide(index - 1);
+        }
+
+        function startAutoSlide() {
+            autoSlideInterval = setInterval(nextSlide, 7000);
+        }
+
+        function pauseAutoSlide() {
+            if (autoSlideInterval) {
+                clearInterval(autoSlideInterval);
+            }
+            // Restart after 12 seconds of no interaction
+            setTimeout(startAutoSlide, 12000);
+        }
+
+        // Initialize auto-slide
+        startAutoSlide();
+
+        // Keyboard navigation
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'ArrowLeft') {
+                pauseAutoSlide();
+                previousSlide();
+            } else if (e.key === 'ArrowRight') {
+                pauseAutoSlide();
+                nextSlide();
+            }
+        });
+
+        // Touch/swipe support
+        let startX, startY;
+
+        document.addEventListener('touchstart', function(e) {
+            startX = e.touches[0].clientX;
+            startY = e.touches[0].clientY;
+        });
+
+        document.addEventListener('touchend', function(e) {
+            if (!startX || !startY) return;
+
+            const endX = e.changedTouches[0].clientX;
+            const endY = e.changedTouches[0].clientY;
+            const diffX = startX - endX;
+            const diffY = startY - endY;
+
+            if (Math.abs(diffX) > Math.abs(diffY) && Math.abs(diffX) > 50) {
+                pauseAutoSlide();
+                if (diffX > 0) {
+                    nextSlide();
+                } else {
+                    previousSlide();
+                }
+            }
+
+            startX = null;
+            startY = null;
+        });
+
+        // Pause auto-slide when user hovers over navigation elements
+        document.querySelectorAll('.carousel-nav, .indicator').forEach(element => {
+            element.addEventListener('mouseenter', pauseAutoSlide);
+        });
+    </script>
+</body>
+</html>
